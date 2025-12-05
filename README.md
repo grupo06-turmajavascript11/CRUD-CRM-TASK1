@@ -1,6 +1,6 @@
 # CRM – Backend para Gerenciamento de Clientes
 
-Backend desenvolvido em NestJS para gerenciamento de clientes (módulo CRM), com operações completas de CRUD e consulta específica por nome. O projeto foi construído como solução para o **Desafio 1 – Backend (CRUD Completo)**.
+Backend desenvolvido em NestJS para gerenciamento de clientes (módulo CRM), com operações completas de CRUD e consulta específica por nome. O projeto foi construído como solução para o **Task 1 – Backend (CRUD Completo)**.
 
 ---
 
@@ -200,7 +200,7 @@ async findByNome(nome: string): Promise<Cliente[]> {
 ```
 Observação: Esta funcionalidade atende ao requisito de “método de consulta específico por atributo”.
 
-Criar novo cliente
+4. Criar novo cliente
 
 Método HTTP: POST
 
@@ -235,3 +235,188 @@ Implementação:
 Controller: update(@Body() cliente: Cliente)
 
 Service:
+
+```css
+async update(cliente: Cliente): Promise<Cliente> {
+  await this.findById(cliente.id);
+  return await this.clienteRepository.save(cliente);
+}
+```
+
+6. Excluir cliente
+
+Método HTTP: DELETE
+
+Rota: /clientes/:id
+
+Parâmetro de rota: id (number)
+
+Descrição: Remove o cliente com o ID informado.
+
+Regras:
+
+Antes de excluir, o service chama findById(id); se não encontrar, é lançada exceção.
+
+Implementação:
+
+Controller: delete(@Param('id', ParseIntPipe) id: number)
+
+Service:
+
+```css
+async delete(id: number): Promise<DeleteResult> {
+  const buscaCliente = await this.findById(id);
+
+  if (!buscaCliente)
+    throw new HttpException('Postagem não encontrada!', HttpStatus.NOT_FOUND);
+
+  return await this.clienteRepository.delete(id);
+}
+```
+
+Tecnologias Utilizadas
+Backend
+
+Node.js
+
+NestJS
+
+TypeScript
+
+TypeORM
+
+class-validator
+
+@nestjs/common, @nestjs/core, @nestjs/typeorm
+
+Banco de Dados
+
+MySQL
+
+Banco de dados: db_crm
+
+Tabela principal: tb_clientes
+
+Configuração de conexão em app.module.ts:
+```css
+TypeOrmModule.forRoot({
+  type: 'mysql',
+  host: 'localhost',
+  port: 3306,
+  username: 'root',
+  password: 'root',
+  database: 'db_crm',
+  entities: [Cliente],
+  synchronize: true,
+});
+```
+Configuração do Ambiente
+Pré-requisitos
+
+Node.js instalado
+
+NPM ou Yarn
+
+MySQL em execução local
+
+Banco de dados db_crm criado:
+```css
+CREATE DATABASE db_crm;
+```
+
+Como Executar o Projeto
+
+1. Clonar o repositório
+```css
+git clone <URL-DO-REPOSITORIO>
+cd <nome-da-pasta>
+```
+2. Instalar as dependências
+```css
+npm install
+```
+3. Configurar o banco de dados
+
+Garantir que o MySQL está rodando em localhost:3306;
+
+Banco db_crm criado;
+
+Ajustar username e password em app.module.ts, se necessário.
+
+4. Iniciar a aplicação em modo desenvolvimento
+```css
+npm run start:dev
+```
+5. Acessar a API
+
+URL base: http://localhost:4000
+
+Exemplos de rotas:
+
+GET http://localhost:4000/clientes
+
+POST http://localhost:4000/clientes
+
+GET http://localhost:4000/clientes/1
+
+GET http://localhost:4000/clientes/nome/joao
+
+##Testes dos Endpoints
+
+Recomenda-se o uso de ferramentas como Insomnia ou Postman para validação das funcionalidades.
+
+Sequência sugerida de testes:
+
+1. Criar cliente
+
+- POST /clientes com body JSON válido.
+
+2. Listar todos os clientes
+
+- GET /clientes
+
+3. Buscar por ID
+
+- GET /clientes/:id
+
+4. Buscar por nome (consulta específica)
+
+- GET /clientes/nome/:nome
+
+5. Atualizar cliente
+
+- PUT /clientes com id existente.
+
+6. Excluir cliente
+
+- DELETE /clientes/:id
+
+7. Validar erro de não encontrado
+
+- GET /clientes/:id para um ID inexistente.
+
+##Critérios do Desafio Atendidos
+
+- Model criada com mais de 4 atributos além do ID (nome, rg, cpf, dataNasc, telefone, email, endereco);
+
+- Todos os métodos básicos de CRUD implementados:
+
+findAll()
+
+findById()
+
+create() (POST)
+
+update() (PUT)
+
+delete() (DELETE)
+
+- Método de consulta específica por atributo:
+
+findByNome() / GET /clientes/nome/:nome
+
+- Backend executando sem erros, com criação automática da tabela tb_clientes via synchronize: true;
+
+- Estrutura organizada em módulo, controller, service e entity;
+
+- Validações de dados aplicadas via class-validator e ValidationPipe global.
