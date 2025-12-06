@@ -47,31 +47,31 @@ A aplicação segue a estrutura padrão de um projeto NestJS, com separação em
 
 Principais arquivos:
 
-- `main.ts`  
+### `main.ts`  
   - Inicializa a aplicação NestJS;
   - Define timezone (`process.env.TZ = '-03:00'`);
   - Configura `ValidationPipe` global;
   - Habilita CORS;
   - Sobe o servidor na porta `4000`.
 
-- `app.module.ts`  
+### `app.module.ts`  
   - Configura a conexão com o banco de dados via `TypeOrmModule.forRoot`;
   - Registra a entidade `Cliente`;
   - Importa o `ClienteModule`.
 
-- `cliente/cliente.module.ts`  
+### `cliente/cliente.module.ts`  
   - Registra o controller e o service de clientes;
   - Importa o repositório da entidade `Cliente`.
 
-- `cliente/controllers/cliente.controller.ts`  
+### `cliente/controllers/cliente.controller.ts`  
   - Define as rotas HTTP (`/clientes`);
   - Mapeia os métodos de CRUD e busca específica.
 
-- `cliente/services/cliente.service.ts`  
+### `cliente/services/cliente.service.ts`  
   - Implementa as regras de negócio;
   - Realiza o acesso ao banco via `Repository<Cliente>` do TypeORM.
 
-- `cliente/entities/cliente.entity.ts`  
+### `cliente/entities/cliente.entity.ts`  
   - Define a entidade `Cliente` e seu mapeamento para a tabela `tb_clientes`.
 
 ---
@@ -135,7 +135,7 @@ Validações via class-validator:
 
 @IsISO8601() para a data de nascimento.
 
-Funcionalidades (CRUD + Consulta Específica)
+## Funcionalidades (CRUD + Consulta Específica)
 
 Todas as funcionalidades são expostas via ClienteController, com base no ClienteService.
 
@@ -274,8 +274,11 @@ async delete(id: number): Promise<DeleteResult> {
 }
 ```
 
-Tecnologias Utilizadas
-Backend
+---
+
+## Tecnologias Utilizadas
+
+- Backend:
 
 Node.js
 
@@ -287,9 +290,7 @@ TypeORM
 
 class-validator
 
-@nestjs/common, @nestjs/core, @nestjs/typeorm
-
-Banco de Dados
+- Banco de Dados:
 
 MySQL
 
@@ -297,34 +298,25 @@ Banco de dados: db_crm
 
 Tabela principal: tb_clientes
 
-Configuração de conexão em app.module.ts:
-```css
-TypeOrmModule.forRoot({
-  type: 'mysql',
-  host: 'localhost',
-  port: 3306,
-  username: 'root',
-  password: 'root',
-  database: 'db_crm',
-  entities: [Cliente],
-  synchronize: true,
-});
-```
-Configuração do Ambiente
-Pré-requisitos
+---
 
-Node.js instalado
+## Configuração do Ambiente
+Pré-requisitos:
 
-NPM ou Yarn
+- Node.js instalado
 
-MySQL em execução local
+- NPM 
+
+- MySQL em execução local
 
 Banco de dados db_crm criado:
 ```css
 CREATE DATABASE db_crm;
 ```
 
-Como Executar o Projeto
+---
+
+## Como Executar o Projeto
 
 1. Clonar o repositório
 ```css
@@ -361,7 +353,9 @@ GET http://localhost:4000/clientes/1
 
 GET http://localhost:4000/clientes/nome/joao
 
-##Testes dos Endpoints
+---
+
+## Testes dos Endpoints
 
 Recomenda-se o uso de ferramentas como Insomnia ou Postman para validação das funcionalidades.
 
@@ -369,33 +363,35 @@ Sequência sugerida de testes:
 
 1. Criar cliente
 
-- POST /clientes com body JSON válido.
+  - POST /clientes com body JSON válido.
 
 2. Listar todos os clientes
 
-- GET /clientes
+   - GET /clientes
 
 3. Buscar por ID
 
-- GET /clientes/:id
+    - GET /clientes/:id
 
 4. Buscar por nome (consulta específica)
 
-- GET /clientes/nome/:nome
+    - GET /clientes/nome/:nome
 
 5. Atualizar cliente
 
-- PUT /clientes com id existente.
+    - PUT /clientes com id existente.
 
 6. Excluir cliente
 
-- DELETE /clientes/:id
+    - DELETE /clientes/:id
 
 7. Validar erro de não encontrado
 
-- GET /clientes/:id para um ID inexistente.
+    - GET /clientes/:id para um ID inexistente.
 
-##Critérios do Desafio Atendidos
+---
+
+## Critérios do Desafio Atendidos
 
 - Model criada com mais de 4 atributos além do ID (nome, rg, cpf, dataNasc, telefone, email, endereco);
 
