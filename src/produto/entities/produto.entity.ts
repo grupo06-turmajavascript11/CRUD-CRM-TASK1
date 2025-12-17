@@ -12,25 +12,23 @@ export class Produto {
   
   @IsNotEmpty()
   @Column({ length: 100, nullable: false })
-  nome: string; // Ex: "Seguro Auto Premium"
+  nome: string;
 
   @IsNotEmpty()
   @Column({ length: 1000, nullable: false })
-  descricao: string; // Detalhes da cobertura
+  descricao: string;
 
   @IsNotEmpty()
   @IsNumber({ maxDecimalPlaces: 2 })
   @IsPositive()
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
-  preco: number; // Valor de tabela
-
+  preco: number;
   @Column({ type: 'date', nullable: true })
-  carencia: string; // Data fim da carência ou data de validade
+  carencia: string;
 
   // --- DADOS DA OPORTUNIDADE (O status da negociação) ---
 
   // Aqui está o segredo: O Status define se é apenas um item no catálogo ou uma venda em andamento
-  // Sugestão de Enum: 
   // 'DISPONIVEL' (Produto criado pelo Admin, ninguém comprou ainda)
   // 'EM_NEGOCIACAO' (Cliente demonstrou interesse)
   // 'FECHADO' (Venda concluída)

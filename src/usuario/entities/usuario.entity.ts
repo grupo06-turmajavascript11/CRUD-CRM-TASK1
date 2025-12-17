@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-// import { Produto } from './produto.entity'; // Descomente quando criar a entidade Produto
+import { Produto } from '../../produto/entities/produto.entity';
 
 @Entity({ name: 'tb_usuarios' })
 export class Usuario {
@@ -39,7 +39,6 @@ export class Usuario {
   @Column({ length: 50, nullable: true })
   telefone: string;
   
-  // Um Usuário (Cliente) pode ter várias Oportunidades/Produtos
-  // @OneToMany(() => Produto, (produto) => produto.usuario)
-  // produto: Produto[];
+  @OneToMany(() => Produto, (produto) => produto.usuario)
+  produto: Produto[];
 }
