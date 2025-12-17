@@ -13,13 +13,28 @@ export class CategoriaService {
   async findAll(): Promise<Categoria[]> {
     return await this.categoriaRepository.find();
   }
+
+  async findAllDisponiveis(): Promise<Categoria[]> {
+    return await this.categoriaRepository.find({
+      relations: ['produto'],
+      where: {
+        produto: {
+          status: 'DISPONIVEL',
+        },
+      },
+    });
+  }
+
   async findById(id: number): Promise<Categoria> {
     const categoria = await this.categoriaRepository.findOne({
       where: { id },
     });
 
     if (!categoria)
-      throw new HttpException('Categoria não encontrado!', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        'Categoria não encontrado!',
+        HttpStatus.NOT_FOUND,
+      );
 
     return categoria;
   }
@@ -38,7 +53,10 @@ export class CategoriaService {
     const buscaCategoria = await this.findById(categoria.id);
 
     if (!buscaCategoria)
-      throw new HttpException('Categoria não encontrado!', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        'Categoria não encontrado!',
+        HttpStatus.NOT_FOUND,
+      );
 
     return await this.categoriaRepository.save(categoria);
   }
@@ -47,7 +65,10 @@ export class CategoriaService {
     const buscaCategoria = await this.findById(id);
 
     if (!buscaCategoria)
-      throw new HttpException('Categoria não encontrado!', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        'Categoria não encontrado!',
+        HttpStatus.NOT_FOUND,
+      );
 
     return await this.categoriaRepository.delete(id);
   }

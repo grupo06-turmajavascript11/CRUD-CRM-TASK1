@@ -1,5 +1,11 @@
-import { IsNotEmpty, IsNumber, IsPositive, MaxLength } from 'class-validator';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { IsNotEmpty, IsNumber, IsPositive } from 'class-validator';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Categoria } from '../../categoria/entities/categoria.entity';
 import { Usuario } from '../../usuario/entities/usuario.entity';
 
@@ -8,8 +14,6 @@ export class Produto {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // --- DADOS DO PRODUTO (O que é vendido) ---
-  
   @IsNotEmpty()
   @Column({ length: 100, nullable: false })
   nome: string;
@@ -26,36 +30,24 @@ export class Produto {
   @Column({ type: 'date', nullable: true })
   carencia: string;
 
-  // --- DADOS DA OPORTUNIDADE (O status da negociação) ---
-
-  // Aqui está o segredo: O Status define se é apenas um item no catálogo ou uma venda em andamento
-  // 'DISPONIVEL' (Produto criado pelo Admin, ninguém comprou ainda)
-  // 'EM_NEGOCIACAO' (Cliente demonstrou interesse)
-  // 'FECHADO' (Venda concluída)
   @IsNotEmpty()
-  @Column({ 
-      type: 'enum', 
-      enum: ['DISPONIVEL', 'EM_NEGOCIACAO', 'FECHADO'], 
-      default: 'DISPONIVEL' 
+  @Column({
+    type: 'enum',
+    enum: ['DISPONIVEL', 'EM_NEGOCIACAO', 'FECHADO'],
+    default: 'DISPONIVEL',
   })
   status: string;
-  
-  // Data que o cliente demonstrou interesse
+
   @UpdateDateColumn()
-  dataAtualizacao: Date; 
+  dataAtualizacao: Date;
 
-  // --- RELACIONAMENTOS ---
-
-  // Muitas Oportunidades pertencem a Uma Categoria
   @ManyToOne(() => Categoria, (categoria) => categoria.produto, {
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
   })
   categoria: Categoria;
 
-  // Muitas Oportunidades pertencem a Um Usuário (Cliente)
-  // OBS: Se o status for 'DISPONIVEL', este campo pode ficar NULL (ou vinculado ao Admin)
   @ManyToOne(() => Usuario, (usuario) => usuario.produto, {
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
   })
   usuario: Usuario;
 }

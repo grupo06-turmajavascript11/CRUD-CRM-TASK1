@@ -20,7 +20,7 @@ export class UsuarioService {
   async findById(id: number): Promise<Usuario> {
     const usuario = await this.usuarioRepository.findOne({
       where: { id },
-      // relations: ['produto'] 
+      // relations: ['produto']
     });
 
     if (!usuario) {
@@ -31,7 +31,7 @@ export class UsuarioService {
 
   async findByUsuario(usuario: string): Promise<Usuario | null> {
     return await this.usuarioRepository.findOne({
-      where: { email: usuario }
+      where: { email: usuario },
     });
   }
 
@@ -52,9 +52,9 @@ export class UsuarioService {
     const buscaUsuario = await this.findById(usuario.id);
 
     if (usuario.senha && usuario.senha !== buscaUsuario.senha) {
-        usuario.senha = await bcrypt.hash(usuario.senha, 10);
+      usuario.senha = await bcrypt.hash(usuario.senha, 10);
     }
-    
+
     return await this.usuarioRepository.save(usuario);
   }
 

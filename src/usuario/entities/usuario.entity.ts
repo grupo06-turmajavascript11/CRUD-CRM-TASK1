@@ -28,8 +28,6 @@ export class Usuario {
   @Column({ type: 'enum', enum: ['ADMIN', 'CLIENTE'], default: 'CLIENTE' })
   tipo: string;
 
-  // --- DADOS ESPECÍFICOS DE CLIENTE ---
-
   @Column({ length: 14, nullable: true, unique: true })
   documento: string;
 
@@ -38,7 +36,7 @@ export class Usuario {
 
   @Column({ length: 50, nullable: true })
   telefone: string;
-  
+
   @OneToMany(() => Produto, (produto) => produto.usuario)
   produto: Produto[];
 }
