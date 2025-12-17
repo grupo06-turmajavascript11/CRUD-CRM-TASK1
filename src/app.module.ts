@@ -1,7 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Cliente } from './cliente/entities/cliente.entity';
-import { ClienteModule } from './cliente/cliente.module';
+import { Produto } from './produto/entities/produto.entity';
+import { Categoria } from './categoria/entities/categoria.entity';
+import { Usuario } from './usuario/entities/usuario.entity';
+import { ProdutoModule } from './produto/produto.module';
+import { CategoriaModule } from './categoria/categoria.module';
+import { UsuarioModule } from './usuario/usuario.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -11,10 +15,12 @@ import { ClienteModule } from './cliente/cliente.module';
       username: 'root',
       password: 'root',
       database: 'db_crm',
-      entities: [Cliente],
+      entities: [Produto, Categoria, Usuario],
       synchronize: true,
     }),
-    ClienteModule,
+    ProdutoModule,
+    CategoriaModule,
+    UsuarioModule,
   ],
   controllers: [],
   providers: [],

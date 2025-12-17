@@ -5,7 +5,7 @@ import { ApiTags } from "@nestjs/swagger";
 
 
 @ApiTags('Categoria')
-@Controller("/Categoria")
+@Controller("/categoria")
 export class CategoriaController {
     constructor(private readonly categoriaService: CategoriaService) { }
 
@@ -21,10 +21,10 @@ export class CategoriaController {
         return this.categoriaService.findById(id);
     }
 
-    @Get('/descricao/:descricao')
+    @Get('/categorias/:categoria')
     @HttpCode(HttpStatus.OK)
-    findAllBydescricao(@Param('descricao') descricao: string): Promise<Categoria[]> {
-        return this.categoriaService.findByDescricao(descricao);
+    findAllByNome(@Param('categoria') categoria: string): Promise<Categoria[]> {
+        return this.categoriaService.findByNome(categoria);
     }
 
     @Post()
