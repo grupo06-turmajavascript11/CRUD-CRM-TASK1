@@ -50,7 +50,7 @@ export class ProdutoService {
 
   async findByIdPublico(id: number): Promise<Produto> {
     const produto = await this.produtoRepository.findOne({
-      where: { id, status: 'DISPONIVEL' },
+      where: { id: id, status: 'DISPONIVEL' },
       relations: ['categoria'],
     });
 

@@ -34,7 +34,7 @@ export class Usuario {
   @Column({ type: 'date', nullable: true })
   dataNasc: string;
 
-  @Column({ length: 50, nullable: true })
+  @Column({ length: 50, nullable: true, unique: true })
   telefone: string;
 
   @OneToMany(() => Produto, (produto) => produto.usuario)

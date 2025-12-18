@@ -19,10 +19,15 @@ import { DeleteResult } from 'typeorm';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from '../../security/roles.decorators';
 import { RolesGuard } from '../../security/roles.guards';
+import { AuthService } from '../../auth/services/auth.service';
+import { LocalAuthGuard } from '../../auth/guard/local-auth.guard';
 
 @Controller('/usuarios')
 export class UsuarioController {
-  constructor(private readonly usuarioService: UsuarioService) {}
+  constructor(
+    private readonly usuarioService: UsuarioService,
+    private readonly authService: AuthService,
+  ) {}
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
@@ -30,6 +35,13 @@ export class UsuarioController {
   @HttpCode(HttpStatus.OK)
   findAll(): Promise<Usuario[]> {
     return this.usuarioService.findAll();
+  }
+
+  @UseGuards(LocalAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Post('/login')
+  login(@Request() req) {
+    return this.authService.login(req.user);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -61,6 +73,7 @@ export class UsuarioController {
   update(@Body() usuario: Usuario): Promise<Usuario> {
     return this.usuarioService.update(usuario);
   }
+
   @UseGuards(AuthGuard('jwt'))
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)

@@ -6,6 +6,7 @@ import { Usuario } from './usuario/entities/usuario.entity';
 import { ProdutoModule } from './produto/produto.module';
 import { CategoriaModule } from './categoria/categoria.module';
 import { UsuarioModule } from './usuario/usuario.module';
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -21,6 +22,7 @@ import { UsuarioModule } from './usuario/usuario.module';
     ProdutoModule,
     CategoriaModule,
     UsuarioModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

@@ -27,8 +27,8 @@ export class Produto {
   @IsPositive()
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
   preco: number;
-  @Column({ type: 'date', nullable: true })
-  carencia: string;
+  @Column({ type: 'int', nullable: true })
+  carencia: number;
 
   @IsNotEmpty()
   @Column({
@@ -41,6 +41,7 @@ export class Produto {
   @UpdateDateColumn()
   dataAtualizacao: Date;
 
+  @IsNotEmpty()
   @ManyToOne(() => Categoria, (categoria) => categoria.produto, {
     onDelete: 'CASCADE',
   })

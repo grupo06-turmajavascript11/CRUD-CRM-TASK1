@@ -13,14 +13,14 @@ export class UsuarioService {
 
   async findAll(): Promise<Usuario[]> {
     return await this.usuarioRepository.find({
-      // relations: ['produto'] // Descomente quando tiver o relacionamento
+      relations: ['produto'],
     });
   }
 
   async findById(id: number): Promise<Usuario> {
     const usuario = await this.usuarioRepository.findOne({
       where: { id },
-      // relations: ['produto']
+      relations: ['produto'],
     });
 
     if (!usuario) {
@@ -29,9 +29,9 @@ export class UsuarioService {
     return usuario;
   }
 
-  async findByUsuario(usuario: string): Promise<Usuario | null> {
+  async findByEmail(email: string): Promise<Usuario | null> {
     return await this.usuarioRepository.findOne({
-      where: { email: usuario },
+      where: { email: email },
     });
   }
 
@@ -44,6 +44,20 @@ export class UsuarioService {
   }
 
   async create(usuario: Usuario): Promise<Usuario> {
+    const buscaUsuario = await this.usuarioRepository.find({
+      where: [
+        { email: usuario.email },
+        { documento: usuario.documento },
+        { telefone: usuario.telefone },
+      ],
+    });
+
+    if (buscaUsuario.length > 0) {
+      throw new HttpException(
+        'Já existe um usuário cadastrado com este e-mail, CPF ou telefone!',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     usuario.senha = await bcrypt.hash(usuario.senha, 10);
     return await this.usuarioRepository.save(usuario);
   }
@@ -62,6 +76,6 @@ export class UsuarioService {
     const buscaUsuario = await this.findById(id);
     if (!buscaUsuario)
       throw new HttpException('Usuário não encontrado!', HttpStatus.NOT_FOUND);
-    return await this.usuarioRepository.delete(id);
+    return this.usuarioRepository.delete(id);
   }
 }

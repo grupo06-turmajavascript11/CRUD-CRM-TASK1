@@ -32,7 +32,7 @@ export class CategoriaService {
 
     if (!categoria)
       throw new HttpException(
-        'Categoria não encontrado!',
+        'Categoria não encontrada!',
         HttpStatus.NOT_FOUND,
       );
 
@@ -46,6 +46,15 @@ export class CategoriaService {
   }
 
   async create(categoria: Categoria): Promise<Categoria> {
+    const buscaCategoria = await this.categoriaRepository.findOne({
+      where: { nome: categoria.nome },
+    });
+
+    if (buscaCategoria)
+      throw new HttpException(
+        'Categoria já existente!',
+        HttpStatus.BAD_REQUEST,
+      );
     return await this.categoriaRepository.save(categoria);
   }
 
