@@ -90,12 +90,12 @@ export class UsuarioController {
   }
 
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Buscar usuário por ID (Apenas Admin)' })
+  @ApiOperation({ summary: 'Buscar usuário por ID (Apenas Admin e Cliente)' })
   @ApiParam({ name: 'id', description: 'ID numérico do usuário', example: 1 })
   @ApiOkResponse({ description: 'Usuário encontrado.', type: Usuario })
   @ApiForbiddenResponse({ description: 'Acesso negado.' })
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles('ADMIN')
+  @Roles('ADMIN', 'CLIENTE')
   @Get('/:id')
   @HttpCode(HttpStatus.OK)
   findById(@Param('id', ParseIntPipe) id: number): Promise<Usuario> {

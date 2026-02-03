@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 
 @Injectable()
@@ -11,7 +10,7 @@ export class ProdService implements TypeOrmOptionsFactory {
       logging: false,
       dropSchema: false,
       ssl: {
-        rejectUnauthorized: false,
+        rejectUnauthorized: true,
       },
       synchronize: true,
       autoLoadEntities: true,
